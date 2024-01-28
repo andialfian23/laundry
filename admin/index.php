@@ -6,7 +6,7 @@ include '../koneksi.php';
 <div class="container">
     <div class="alert alert-info text-center">
         <h4 style="margin-bottom: 0px"><b>Selamat datang!</b> di sistem
-            informasi laundry malas ngoding.</h4>
+            informasi laundry bayar mahal.</h4>
     </div>
     <div class="panel">
         <div class="panel-heading">
