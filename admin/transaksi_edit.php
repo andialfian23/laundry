@@ -1,46 +1,128 @@
-<?php include'header.php';?>
-
+<?php include 'header.php'; ?>
 <?php
-
+// koneksi database
 include '../koneksi.php';
 ?>
+
 <div class="container">
     <div class="panel">
         <div class="panel-heading">
-            <h4>Edit Transaksi Laundry</4>
+            <h4>Edit Transaksi Laundry</h4>
         </div>
         <div class="panel-body">
-
             <div class="col-md-8 col-md-offset-2">
-                <a href="transaksi.php" class="btn btn-sm tbn-info pull-right">Kembali</a>
+                <a href="transaksi.php" class="btn btn-sm btn-info pull-right">Kembali</a>
                 <br />
                 <br />
-                <br />
+                <?php
+                    // menangkap id yang dikirim melalui url
+                    $id = $_GET['id'];
+                    // megambil data pelanggan yang ber id di atas dari tabel pelanggan
+                    $transaksi = mysqli_query($koneksi,"select * from
+                    transaksi where transaksi_id='$id'");
+                    while($t=mysqli_fetch_array($transaksi)){
+                    ?>
+                <form method="post" action="transaksi_update.php">
+                    <!-- menyimpan id transaksi yang di edit dalam form hidden berikut -->
+                    <input type="hidden" name="id" value="<?= $t['transaksi_id']; ?>">
+                    <div class="form-group">
+                        <label>Pelanggan</label>
+                        <select class="form-control" name="pelanggan" required="required">
+                            <option value="" hidden>- Pilih Pelanggan</option>
 
-                <table class="table">
+                            <?php
+                                // mengambil data pelanggan dari database
+                                $data = mysqli_query($koneksi,"SELECT * from pelanggan");
+                                // mengubah data ke array dan menampilkannya dengan perulangan while
+                                while($d=mysqli_fetch_array($data)){
+                                ?>
+                            <option <?php
+                                if($d['pelanggan_id']==$t['pelanggan_id']){
+                                    echo "selected='selected'";} ?> value="<?= $d['pelanggan_id']; ?>">
+                                <?= $d['nama']; ?></option>
+                            <?php
+                                }
+                                ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Berat</label>
+                        <input type="number" class="form-control" name="berat" placeholder="Masukkan berat cucian .."
+                            required="required" value="<?= $t['berat']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>Tgl. Selesai</label>
+                        <input type="date" class="form-control" name="tgl_selesai" required="required"
+                            value="<?= $t['tgl_selesai']; ?>">
+                    </div>
+                    <br />
 
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Jenis Pakaian</th>
+                                <th width="20%">Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // menyimpan id transaksi ke variabel id_transaksi
+                            $id_transaksi = $t['transaksi_id'];
+                            // menampilkan pakaian-pakaian dari transaksi yang ber id di atas
+                            $pakaian = mysqli_query($koneksi,"SELECT * from pakaian 
+                                where transaksi_id='$id_transaksi'");
+                            while($p=mysqli_fetch_array($pakaian)){
+                            ?>
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control" name="jenis_pakaian[]" value="<?=
+$p['jenis']; ?>">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control" name="jumlah_pakaian[]" value="<?=
+$p['jumlah']; ?>">
+                                </td>
+                            </tr>
+                            <?php } ?>
+                            <tr>
+                                <td><input type="text" class="form-control" name="jenis_pakaian[]"></td>
+                                <td><input type="number" class="form-control" name="jumlah_pakaian[]"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" name="jenis_pakaian[]"></td>
+                                <td><input type="number" class="form-control" name="jumlah_pakaian[]"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" name="jenis_pakaian[]"></td>
+                                <td><input type="number" class="form-control" name="jumlah_pakaian[]"></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control" name="jenis_pakaian[]"></td>
+                                <td><input type="number" class="form-control" name="jumlah_pakaian[]"></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-
-                </table>
-
-
+                    <div class="form-group alert alertinfo">
+                        <label>Status</label>
+                        <select class="form-control" name="status" required="required">
+                            <option <?php
+if($t['status']=="0"){echo "selected='selected'";} ?> value="0">PROSES</option>
+                            <option <?php
+if($t['status']=="1"){echo "selected='selected'";} ?> value="1">DI
+                                CUCI</option>
+                            <option <?php
+if($t['status']=="2"){echo "selected='selected'";} ?> value="2">SELESAI</option>
+                        </select>
+                    </div>
+                    <input type="submit" class="btn
+btn-primary" value="Simpan">
+                </form>
+                <?php
+}
+?>
             </div>
         </div>
     </div>
 </div>
+<?php include 'footer.php'; ?>

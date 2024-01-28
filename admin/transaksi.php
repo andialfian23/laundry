@@ -26,7 +26,10 @@
                 <?php
                     include '../koneksi.php';
 
-                    $data = mysqli_query($koneksi,"select * from transaksi");
+                    $data = mysqli_query($koneksi,"SELECT t.*, nama 
+                                    FROM transaksi as t
+                                    LEFT JOIN pelanggan as p ON t.pelanggan_id = p.pelanggan_id 
+                                    order by transaksi_id DESC");
                     $no = 1;
                     
                     while($d=mysqli_fetch_array($data)){
@@ -34,14 +37,14 @@
                 <tr>
                     <td><?php echo $no++; ?></td>
                     <td><?php echo $d['tgl'];?></td>
-                    <td><?php echo $d['pelanggan'];?></td>
+                    <td><?php echo $d['nama'];?></td>
                     <td><?php echo $d['harga']; ?></td>
                     <td><?php echo $d['berat'];  ?></td>
                     <td><?php echo $d['tgl_selesai'];?></td>
                     <td><?php echo $d['status'];?></td>
-                    <td><a href="pelanggan_edit.php?id=<?php echo $d['transaksi_id'] ?>"
+                    <td><a href="transaksi_edit.php?id=<?php echo $d['transaksi_id'] ?>"
                             class="btn btn-sm btn-info">Edit</a>
-                        <a href="pelanggan_hapus.php?id=<?php echo $d['transaksi_id']; ?>"
+                        <a href="transaksi_hapus.php?id=<?php echo $d['transaksi_id']; ?>"
                             class="btn btn-sm btn-danger">Hapus</a>
                     </td>
                 </tr>

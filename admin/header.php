@@ -62,7 +62,7 @@
                             <i class="glyphicon glyphicon-wrench"></i> &nbsp; Pengaturan <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="harga.php">Pengaturan Harga</a></li>
+                            <!-- <li><a href="harga.php">Pengaturan Harga</a></li> -->
                             <li><a href="ganti_password.php">Ganti Password</a></li>
                         </ul>
                     </li>
